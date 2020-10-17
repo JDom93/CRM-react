@@ -89,6 +89,7 @@ const ContentPlayer = () => {
                 ></i>
                 <i
                     onClick={() => {
+                        if (!audioPlaying) return;
                         setAudioPlaying(false);
                         audioEl.current.pause();
                         audioEl.current.currentTime = 0;
