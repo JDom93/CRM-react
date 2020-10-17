@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentPlaytimeAction } from '../redux/actions';
+import {
+    setCurrentPlaytimeAction,
+    setWaveformColorAction,
+} from '../redux/actions';
 
 const ContentPlayer = () => {
     const dispatch = useDispatch();
@@ -8,32 +11,45 @@ const ContentPlayer = () => {
     const audioEl = useRef({});
     const currentTrack = useSelector(state => state.currentTrack);
     const currentPlaytime = useSelector(state => state.currentPlaytime || 0);
+    const [inset, setInset] = useState(0);
     const [audioPlaying, setAudioPlaying] = useState(false);
-    const [audioLoaded, setAudioLoaded] = useState(false);
 
     // Change Playtime based on wave indicator
     useEffect(() => {
         const audio = audioEl.current;
 
-        // Set set Audio Playback Time based on waveform indicator
+        // Set set Audio Playback Time based on waveform indicator clicks
         if (audio && currentTrack) {
             audio.currentTime =
                 (currentTrack.fullDuration * (currentPlaytime / 100)) / 1000;
+
+            // Set waveform indicator
+            setInset(currentPlaytime);
         }
     }, [currentPlaytime, audioEl, currentTrack]);
 
-    // Setup a listener to reset audio el when finished, and to set Playing Flag to true
+    // Setup listeners
     useEffect(() => {
         const audio = audioEl.current;
 
         if (audio && currentTrack) {
+            // to reset audio el when finished
             audio.addEventListener('ended', () => {
                 audio.pause();
                 audio.currentTime = 0;
             });
 
+            // to set Playing Flag to true
             audio.addEventListener('play', () => {
                 setAudioPlaying(true);
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                const percentagePlayed =
+                    (audio.currentTime * 100 * 1000) /
+                    currentTrack.fullDuration;
+                setInset(percentagePlayed);
+                dispatch(setWaveformColorAction(percentagePlayed));
             });
         }
     }, [audioEl, currentTrack]);
@@ -46,6 +62,7 @@ const ContentPlayer = () => {
     };
 
     const toggleAudio = () => {
+        if (!currentTrack) return;
         const audio = audioEl.current;
 
         if (audioPlaying) {
@@ -97,7 +114,7 @@ const ContentPlayer = () => {
                         src={currentTrack.waveformPreview}
                         alt="waveform"
                         style={{
-                            clipPath: `inset(0 0 0 ${currentPlaytime}%)`,
+                            clipPath: `inset(0 0 0 ${inset}%)`,
                         }}
                     />
                     <img
@@ -106,7 +123,7 @@ const ContentPlayer = () => {
                         alt=""
                         // This will color the waveform (basically)
                         style={{
-                            clipPath: `inset(0 ${100 - currentPlaytime}% 0 0)`,
+                            clipPath: `inset(0 ${100 - inset}% 0 0)`,
                         }}
                     />
                     <audio

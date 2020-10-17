@@ -11,6 +11,7 @@ const TrackResult = ({ track }) => {
     const waveformContainer = useRef(null);
     const currentPlaytime = useSelector(state => state.currentPlaytime);
     const currentTrack = useSelector(state => state.currentTrack || {});
+    const waveformPercentage = useSelector(state => state.waveformPercentage);
     const [inset, setInset] = useState(0);
 
     useEffect(() => {
@@ -19,12 +20,15 @@ const TrackResult = ({ track }) => {
             return setInset(0);
         }
 
-        // change playback indicator based on playtime
         if (waveformContainer) {
+            // change playback indicator based on Click
             const rect = waveformContainer.current.getBoundingClientRect();
             setInset(currentPlaytime);
+
+            // set playback indicator based on playtime
+            setInset(waveformPercentage);
         }
-    }, [currentTrack, currentPlaytime]);
+    }, [currentTrack, currentPlaytime, waveformPercentage]);
 
     // On Clicking, make this the current track, and set the playtime based on where it is clicked.
     const changeAudio = e => {

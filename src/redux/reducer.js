@@ -17,5 +17,10 @@ export default function (state = {}, action) {
         });
     }
 
+    if (action.type == 'SET_WAVEFORM_COLOR') {
+        return Object.assign({}, state, {
+            waveformPercentage: action.waveformPercentage,
+        });
+    }
     return state;
 }

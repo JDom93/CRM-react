@@ -24,3 +24,11 @@ export function setCurrentPlaytimeAction(currentPlaytime) {
         currentPlaytime,
     };
 }
+
+export function setWaveformColorAction(waveformPercentage) {
+    const type = 'SET_WAVEFORM_COLOR';
+    return {
+        type,
+        waveformPercentage,
+    };
+}
