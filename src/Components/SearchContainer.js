@@ -12,7 +12,7 @@ const SearchContainer = () => {
     const [multilayer, setMultilayer] = useState(0);
 
     useEffect(() => {
-        // Flag for throtteling api requests
+        // Flag to prevent conflicting state-sets
         let ignore = false;
 
         async function getFilters() {

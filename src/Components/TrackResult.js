@@ -23,7 +23,6 @@ const TrackResult = ({ track }) => {
         if (waveformContainer) {
             // change playback indicator based on Click
             const rect = waveformContainer.current.getBoundingClientRect();
-            setInset(currentPlaytime);
 
             // set playback indicator based on playtime
             setInset(waveformPercentage);

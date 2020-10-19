@@ -26,7 +26,7 @@ const ContentPlayer = () => {
             // Set waveform indicator
             setInset(currentPlaytime);
         }
-    }, [currentPlaytime, audioEl, currentTrack]);
+    }, [currentPlaytime, audioEl.current, currentTrack]);
 
     // Setup listeners
     useEffect(() => {
@@ -34,23 +34,35 @@ const ContentPlayer = () => {
 
         if (audio && currentTrack) {
             // to reset audio el when finished
-            audio.addEventListener('ended', () => {
+            function onEnd() {
                 audio.pause();
                 audio.currentTime = 0;
-            });
+            }
+            audio.addEventListener('ended', onEnd);
 
             // to set Playing Flag to true
-            audio.addEventListener('play', () => {
+            function onPlay() {
                 setAudioPlaying(true);
-            });
+            }
+            audio.addEventListener('play', onPlay);
 
-            audio.addEventListener('timeupdate', () => {
+            // Update waveform continuously
+            function updateWaveform() {
                 const percentagePlayed =
                     (audio.currentTime * 100 * 1000) /
                     currentTrack.fullDuration;
+                console.log('percentage played', percentagePlayed);
                 setInset(percentagePlayed);
                 dispatch(setWaveformColorAction(percentagePlayed));
-            });
+            }
+            audio.addEventListener('timeupdate', updateWaveform);
+
+            return () => {
+                // Clean Up Event Listeners
+                audio.removeEventListener('ended', onEnd);
+                audio.removeEventListener('play', onPlay);
+                audio.removeEventListener('timeupdate', updateWaveform);
+            };
         }
     }, [audioEl, currentTrack]);
 
