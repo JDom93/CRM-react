@@ -25,7 +25,7 @@ const SearchContainer = () => {
             const {
                 data: { filters },
             } = await axios.get(
-                `http://api.createmusic.com/search?search=${query}&mutliLayerOnly=${multilayer}`
+                `https://api.createmusic.com/search?search=${query}&mutliLayerOnly=${multilayer}`
             );
             if (!ignore) {
                 setFilters(filters);
@@ -51,10 +51,9 @@ const SearchContainer = () => {
 
         // get Data
         const { data } = await axios.get(
-            `http://api.createmusic.com/search?search=${filterItem}&mutliLayerOnly=${multilayer}`
+            `https://api.createmusic.com/search?search=${filterItem}&mutliLayerOnly=${multilayer}`
         );
         if (data) {
-            console.log(data);
             dispatch(storeResponseAction(data));
         }
     };
