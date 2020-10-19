@@ -1,0 +1,37 @@
+{
+    "ProductionType": [
+        "Background",
+        "Commercials",
+        "Corporate",
+        "Nature",
+        "Product Videos",
+        "Travel"
+    ],
+    "Keyword": [
+        "Building",
+        "Calm",
+        "Emotional",
+        "Energetic",
+        "Gentle",
+        "Hopeful",
+        "Inspirational",
+        "Motivating",
+        "Positive",
+        "Reflective",
+        "Soft",
+        "Triumphant",
+        "Uplifting"
+    ],
+    "Alben": ["On The Rise"],
+    "Instrument": [
+        "Bass (Electric)",
+        "Brass",
+        "Drums",
+        "Guitar (Electric)",
+        "Percussion",
+        "Piano",
+        "Strings",
+        "Synthesizer"
+    ],
+    "Style": ["Building", "Corporate/Technology", "Filmmusic", "Transportation"]
+}

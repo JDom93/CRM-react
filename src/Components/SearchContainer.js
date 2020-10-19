@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { storeResponseAction } from '../redux/actions';
+import defaultFilters from '../defaultFilters.json';
 import SearchSuggestions from './SearchSuggestions';
 import axios from 'axios';
 
@@ -9,7 +9,7 @@ const SearchContainer = () => {
     const dispatch = useDispatch();
     const [query, setQuery] = useState('');
     const [filters, setFilters] = useState(null);
-    const [multilayer, setMultilayer] = useState(false);
+    const [multilayer, setMultilayer] = useState(0);
 
     useEffect(() => {
         // Flag for throtteling api requests
@@ -45,8 +45,13 @@ const SearchContainer = () => {
         e.preventDefault();
 
         // If no filter item is clicked, use the typed-in query
-        if (!filterItem) {
+        if (!filterItem && query) {
             filterItem = query;
+        }
+
+        // If there's no filter item and no query, show some suggestions:
+        if (!filterItem && !query) {
+            setFilters(defaultFilters);
         }
 
         // get Data
